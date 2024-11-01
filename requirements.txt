@@ -1,0 +1,7 @@
+pedpy~=1.2
+pre-commit~=4.0
+
+# build tools
+setuptools~=75.1
+click~=8.1
+build~=1.1
