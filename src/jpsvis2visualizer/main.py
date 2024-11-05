@@ -109,27 +109,43 @@ def convert_files(
 
 @app.command()
 def main(
-    file_pattern: Annotated[str, typer.Argument(help="Name pattern of files to convert.")],
+    file_pattern: Annotated[
+        str, typer.Argument(help="File name pattern to match input files (e.g., 'data*.txt').")
+    ],
     output_file: Annotated[
-        Optional[Path], typer.Option("--output", "-o", help="Specify output file path.")
+        Optional[Path],
+        typer.Option(
+            "--output",
+            "-o",
+            help="Path to save the converted output file. If not specified, will use input filename with appropriate extension.",
+        ),
     ] = None,
     geometry: Annotated[
-        Optional[str], typer.Option("--geometry", "-g", help="Geometry option.")
+        Optional[str],
+        typer.Option(
+            "--geometry",
+            "-g",
+            help='Geometry specification as a string. Must be enclosed in quotes, e.g., "POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))"',
+        ),
     ] = None,
     geometry_file: Annotated[
-        Optional[Path], typer.Option("--geometry-file", "-gf", help="Specify output file path.")
+        Optional[Path],
+        typer.Option(
+            "--geometry-file",
+            "-gf",
+            help="Path to file containing geometry specification in WKT format. Takes precedence over --geometry if both are provided.",
+        ),
     ] = None,
     frame_rate: Annotated[
         Optional[float],
         typer.Option(
             "--frame-rate",
             "-fps",
-            help="Frame rate used in the files "
-            "(otherwise will try to parse it from the input file).",
+            help="Frame rate in frames per second (e.g., 30.0). If not provided, attempts to extract from input file metadata.",
         ),
     ] = None,
 ) -> None:
-    """Convert given files to JuPedSim sqlite format.
+    """Convert txt trajectory files to JuPedSim sqlite format.
 
         ..................;oOXWMMMMWNKko;.......................................................................................................................................................................
     ................ckKWMMMMMMMMMMMWKkc.....................................................................................................................................................................
